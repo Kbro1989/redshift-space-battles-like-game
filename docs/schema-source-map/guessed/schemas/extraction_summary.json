@@ -1,0 +1,352 @@
+{
+  "extracted": [
+    {
+      "schema": "schema-framemaps.json",
+      "source": "framemaps.jsonc",
+      "size": 1165
+    },
+    {
+      "schema": "schema-items.json",
+      "source": "items.jsonc",
+      "size": 14159
+    },
+    {
+      "schema": "schema-enums.json",
+      "source": "enums.json",
+      "size": 1494
+    },
+    {
+      "schema": "schema-npcs.json",
+      "source": "npcs.jsonc",
+      "size": 10847
+    },
+    {
+      "schema": "schema-soundjson.json",
+      "source": "audio.jsonc",
+      "size": 399
+    },
+    {
+      "schema": "schema-musicjson.json",
+      "source": "audio.jsonc",
+      "size": 399
+    },
+    {
+      "schema": "schema-locs.json",
+      "source": "locs.jsonc",
+      "size": 13492
+    },
+    {
+      "schema": "schema-achievements.json",
+      "source": "achievements.jsonc",
+      "size": 6123
+    },
+    {
+      "schema": "schema-structs.json",
+      "source": "structs.jsonc",
+      "size": 68
+    },
+    {
+      "schema": "schema-sequences.json",
+      "source": "sequences.jsonc",
+      "size": 3448
+    },
+    {
+      "schema": "schema-spotanims.json",
+      "source": "spotanims.json",
+      "size": 1061
+    },
+    {
+      "schema": "schema-materials.json",
+      "source": "materials.jsonc",
+      "size": 6699
+    },
+    {
+      "schema": "schema-oldmaterials.json",
+      "source": "oldmaterials.jsonc",
+      "size": 1891
+    },
+    {
+      "schema": "schema-quickchats.json",
+      "source": "quickchatcategories.jsonc",
+      "size": 498
+    },
+    {
+      "schema": "schema-quickchats.json",
+      "source": "quickchatlines.jsonc",
+      "size": 2120
+    },
+    {
+      "schema": "schema-dbtables.json",
+      "source": "dbtables.jsonc",
+      "size": 1559
+    },
+    {
+      "schema": "schema-dbrows.json",
+      "source": "dbrows.jsonc",
+      "size": 798
+    },
+    {
+      "schema": "schema-dbcolumns.json",
+      "source": "dbrows.jsonc",
+      "size": 798
+    },
+    {
+      "schema": "schema-quests.json",
+      "source": "quests.jsonc",
+      "size": 2120
+    },
+    {
+      "schema": "schema-hitmarks.json",
+      "source": "hitmarks.jsonc",
+      "size": 1927
+    },
+    {
+      "schema": "schema-headbars.json",
+      "source": "headbars.jsonc",
+      "size": 783
+    },
+    {
+      "schema": "schema-varbits.json",
+      "source": "varbits.jsonc",
+      "size": 290
+    },
+    {
+      "schema": "schema-var_player.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_npm.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_client.json",
+      "source": "clientscript.jsonc",
+      "size": 1003
+    },
+    {
+      "schema": "schema-var_client.json",
+      "source": "clientscriptdata.jsonc",
+      "size": 775
+    },
+    {
+      "schema": "schema-var_world.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_region.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_object.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_clan.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_clan_settings.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_campaign.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-var_player_group.json",
+      "source": "vars.jsonc",
+      "size": 387
+    },
+    {
+      "schema": "schema-overlays.json",
+      "source": "mapsquare_overlays.jsonc",
+      "size": 1524
+    },
+    {
+      "schema": "schema-identitykit.json",
+      "source": "identitykit.jsonc",
+      "size": 622
+    },
+    {
+      "schema": "schema-inventories.json",
+      "source": "inventories.jsonc",
+      "size": 280
+    },
+    {
+      "schema": "schema-params.json",
+      "source": "params.jsonc",
+      "size": 323
+    },
+    {
+      "schema": "schema-underlays.json",
+      "source": "mapsquare_underlays.jsonc",
+      "size": 440
+    },
+    {
+      "schema": "schema-mapscenes.json",
+      "source": "mapscenes.json",
+      "size": 478
+    },
+    {
+      "schema": "schema-areas.json",
+      "source": "areas.jsonc",
+      "size": 101
+    },
+    {
+      "schema": "schema-skyboxes.json",
+      "source": "skyboxes.jsonc",
+      "size": 298
+    },
+    {
+      "schema": "schema-animgroupconfigs.json",
+      "source": "animgroupconfigs.jsonc",
+      "size": 2939
+    },
+    {
+      "schema": "schema-cursors.json",
+      "source": "cursors.jsonc",
+      "size": 137
+    },
+    {
+      "schema": "schema-maplabels.json",
+      "source": "maplabels.jsonc",
+      "size": 6695
+    },
+    {
+      "schema": "schema-maplabellocations.json",
+      "source": "maplabellocations.jsonc",
+      "size": 143
+    },
+    {
+      "schema": "schema-mapzones.json",
+      "source": "mapzones.json",
+      "size": 612
+    },
+    {
+      "schema": "schema-mapzones.json",
+      "source": "mapzones_pastes.json",
+      "size": 880
+    },
+    {
+      "schema": "schema-mappastes.json",
+      "source": "mapzones_pastes.json",
+      "size": 880
+    },
+    {
+      "schema": "schema-stylesheets.json",
+      "source": "stylesheets.jsonc",
+      "size": 305
+    },
+    {
+      "schema": "schema-cutscenes.json",
+      "source": "cutscenes.jsonc",
+      "size": 1235
+    },
+    {
+      "schema": "schema-maptiles.json",
+      "source": "mapsquare_tiles.jsonc",
+      "size": 2526
+    },
+    {
+      "schema": "schema-maptiles.json",
+      "source": "mapsquare_tiles_64.jsonc",
+      "size": 2073
+    },
+    {
+      "schema": "schema-maptiles.json",
+      "source": "mapsquare_tiles_66.jsonc",
+      "size": 2073
+    },
+    {
+      "schema": "schema-maptiles.json",
+      "source": "mapsquare_tiles_nxt.jsonc",
+      "size": 2693
+    },
+    {
+      "schema": "schema-maptiles_ntx.json",
+      "source": "mapsquare_tiles_nxt.jsonc",
+      "size": 2693
+    },
+    {
+      "schema": "schema-mapenvs.json",
+      "source": "mapsquare_envs.jsonc",
+      "size": 46
+    },
+    {
+      "schema": "schema-frames.json",
+      "source": "frames.json",
+      "size": 171
+    },
+    {
+      "schema": "schema-models.json",
+      "source": "models.jsonc",
+      "size": 5050
+    },
+    {
+      "schema": "schema-scelitalanims.json",
+      "source": "skeletalanim.jsonc",
+      "size": 836
+    },
+    {
+      "schema": "schema-proctextures.json",
+      "source": "proctexture.jsonc",
+      "size": 144
+    },
+    {
+      "schema": "schema-proctextures.json",
+      "source": "oldproctexture.jsonc",
+      "size": 162
+    },
+    {
+      "schema": "schema-components.json",
+      "source": "interfaces.jsonc",
+      "size": 6788
+    },
+    {
+      "schema": "schema-fontmetrics.json",
+      "source": "fontmetrics.jsonc",
+      "size": 928
+    },
+    {
+      "schema": "schema-indices.json",
+      "source": "cacheindex.json",
+      "size": 1067
+    },
+    {
+      "schema": "schema-indices.json",
+      "source": "rootcacheindex.jsonc",
+      "size": 733
+    },
+    {
+      "schema": "schema-rootindex.json",
+      "source": "rootcacheindex.jsonc",
+      "size": 733
+    },
+    {
+      "schema": "schema-clientscriptops.json",
+      "source": "clientscript.jsonc",
+      "size": 1003
+    }
+  ],
+  "missing": [
+    {
+      "schema": "schema-maplocations.json",
+      "candidates": [
+        "maplocations.jsonc"
+      ]
+    },
+    {
+      "schema": "clientvars.d.ts",
+      "candidates": []
+    }
+  ],
+  "errors": []
+}

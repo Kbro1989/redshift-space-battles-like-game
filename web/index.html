@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Redshift Space Battles - 3D Frontier Dominion</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #020308;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: #e0f0ff;
+    }
+    #canvas3d {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      display: block;
+    }
+    #ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .interactive {
+      pointer-events: auto;
+    }
+    /* Buttons & controls */
+    button {
+      background: linear-gradient(135deg, rgba(16, 38, 74, 0.85), rgba(7, 20, 40, 0.95));
+      border: 1px solid rgba(64, 150, 255, 0.5);
+      color: #70c4ff;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    button:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(28, 68, 130, 0.9), rgba(12, 36, 75, 1));
+      border-color: #00e1ff;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 200, 255, 0.35);
+    }
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #667;
+    }
+    button.btn-primary {
+      background: linear-gradient(135deg, rgba(0, 180, 100, 0.85), rgba(0, 100, 50, 0.95));
+      border-color: #00ff88;
+      color: #dffff0;
+    }
+    button.btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(0, 220, 120, 0.95), rgba(0, 130, 70, 1));
+      box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+    }
+    button.btn-danger {
+      background: linear-gradient(135deg, rgba(180, 40, 40, 0.85), rgba(100, 20, 20, 0.95));
+      border-color: #ff4444;
+      color: #ffd8d8;
+    }
+    button.btn-danger:hover:not(:disabled) {
+      background: linear-gradient(135deg, rgba(220, 50, 50, 0.95), rgba(130, 25, 25, 1));
+      box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+    }
+    /* Panels */
+    .glass-panel {
+      background: rgba(8, 14, 28, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(40, 80, 140, 0.45);
+      border-radius: 8px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+    }
+    /* Screens */
+    .screen {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .screen.active {
+      display: flex;
+    }
+    /* Menu screen */
+    #screen-menu {
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: radial-gradient(circle at center, rgba(15, 30, 60, 0.4) 0%, rgba(2, 4, 10, 0.85) 100%);
+    }
+    .menu-box {
+      text-align: center;
+      padding: 40px 60px;
+      max-width: 620px;
+    }
+    .menu-title {
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #00f0ff, #0088ff 50%, #9050ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(0, 180, 255, 0.4);
+    }
+    .menu-sub {
+      font-size: 16px;
+      color: #8ac0ff;
+      letter-spacing: 2px;
+      margin-bottom: 36px;
+      text-transform: uppercase;
+    }
+    /* Commander Screen */
+    #screen-commander {
+      flex-direction: column;
+      padding: 16px 24px;
+      background: rgba(3, 6, 14, 0.65);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      margin-bottom: 14px;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .tab-btn {
+      background: rgba(12, 24, 48, 0.6);
+      border-color: rgba(40, 80, 140, 0.3);
+      color: #8cb0d0;
+      border-radius: 6px 6px 0 0;
+    }
+    .tab-btn.active {
+      background: rgba(24, 52, 100, 0.9);
+      border-color: #00d0ff;
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(0, 180, 255, 0.3);
+    }
+    .content-area {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      min-height: 0;
+    }
+    .scroll-list {
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(100vh - 220px);
+    }
+    .scroll-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scroll-list::-webkit-scrollbar-thumb {
+      background: rgba(40, 90, 160, 0.5);
+      border-radius: 3px;
+    }
+    .item-card {
+      background: rgba(12, 22, 44, 0.7);
+      border: 1px solid rgba(40, 80, 140, 0.4);
+      border-radius: 6px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+    .item-card:hover {
+      border-color: rgba(60, 140, 255, 0.7);
+    }
+    /* Battle Screen HUD */
+    #screen-battle {
+      justify-content: space-between;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .battle-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .fleet-counter {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .counter-friend {
+      color: #00ff88;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+    .counter-foe {
+      color: #ff4444;
+      text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    }
+
+    /* Corner Flight Controls HUD */
+    .hud-controls-corner {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      padding: 14px 18px;
+      background: rgba(4, 10, 24, 0.88);
+      border: 1px solid rgba(0, 200, 255, 0.45);
+      border-radius: 10px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.75), inset 0 0 15px rgba(0, 180, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+      z-index: 50;
+      min-width: 250px;
+    }
+    .hud-header {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #00e1ff;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+      padding-bottom: 5px;
+    }
+    .hud-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #a0c2de;
+    }
+    .hud-keys-group {
+      display: inline-flex;
+      gap: 4px;
+    }
+    .hud-key-badge {
+      display: inline-block;
+      min-width: 22px;
+      height: 20px;
+      line-height: 18px;
+      padding: 0 6px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #70c4ff;
+      background: rgba(8, 24, 52, 0.85);
+      border: 1px solid rgba(0, 180, 255, 0.5);
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      transition: all 0.08s ease;
+    }
+    .hud-key-badge.pressed {
+      background: #00e1ff;
+      color: #020814;
+      border-color: #ffffff;
+      box-shadow: 0 0 12px rgba(0, 225, 255, 0.9);
+      transform: scale(0.95);
+    }
+    /* Modal overlay */
+    #modal-overlay {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    #modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      text-align: center;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+    }
+    /* Toast feedback system */
+    #toast-container {
+      position: absolute;
+      top: 80px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    .toast-msg {
+      background: rgba(6, 18, 38, 0.94);
+      border: 1px solid #00e1ff;
+      border-radius: 6px;
+      padding: 10px 18px;
+      color: #e0f4ff;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 225, 255, 0.35);
+      backdrop-filter: blur(12px);
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1), toastOut 0.4s ease 2.8s forwards;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-msg.toast-warn {
+      border-color: #ff5555;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(255, 68, 68, 0.4);
+      color: #ffd8d8;
+    }
+    .toast-msg.toast-success {
+      border-color: #00ff88;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 255, 136, 0.4);
+      color: #d8ffea;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateY(-12px); }
+    }
+
+    /* ===== MOBILE VIRTUAL CONTROLS ===== */
+    .mob-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      user-select: none;
+      -webkit-user-select: none;
+      pointer-events: auto;
+      font-weight: 700;
+      border-style: solid;
+      border-width: 2px;
+      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.1s ease;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.65), 0 0 10px rgba(0,180,255,0.12);
+    }
+    .mob-btn:active {
+      transform: scale(0.86);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,225,255,0.5);
+    }
+    .mob-btn-label {
+      font-size: 8px;
+      letter-spacing: 0.8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    #joystick-outer, #battle-joystick-outer {
+      touch-action: none;
+      -webkit-touch-callout: none;
+    }
+    @media (hover: hover) {
+      /* On devices with real mouse, hide mobile controls */
+      #mobile-surface-controls,
+      #mobile-battle-controls {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas3d"></canvas>
+
+  <div id="ui-layer">
+    <div id="toast-container"></div>
+    <!-- MAIN MENU -->
+    <div id="screen-menu" class="screen active interactive">
+      <div class="glass-panel menu-box">
+        <h1 class="menu-title">REDSHIFT</h1>
+        <div class="menu-sub">Space Battles • Frontier Dominion</div>
+        <p style="color: #9abfd8; font-size: 14px; margin-bottom: 28px; line-height: 1.6;">
+          Real 3D naval warfare on the frontier of human expansion. Build your base, recruit capital warships, and conquer the lawless outer rim.
+        </p>
+        <button id="btn-explore-world" class="btn-primary" style="width: 100%; padding: 16px; font-size: 18px; margin-bottom: 12px; background: linear-gradient(135deg, rgba(0, 180, 220, 0.9), rgba(0, 80, 180, 0.95)); border-color: #00f0ff;">
+          🪐 ENTER MMORPG WORLD EXPEDITION
+        </button>
+        <button id="btn-start" style="width: 100%; padding: 14px; font-size: 15px; margin-bottom: 10px;">
+          🚀 STARBASE & ARMADA COMMAND
+        </button>
+        <button id="btn-quick-battle" style="width: 100%; padding: 12px; font-size: 14px; opacity: 0.85;">
+          ⚔ INSTANT SKIRMISH
+        </button>
+      </div>
+    </div>
+
+    <!-- STARBASE & FLEET COMMANDER -->
+    <div id="screen-commander" class="screen interactive">
+      <div class="glass-panel top-bar">
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <span style="font-size: 20px; font-weight: 800; color: #00d0ff; letter-spacing: 1px;">⬡ REDSHIFT STARBASE</span>
+          <span id="label-stats" style="color: #8cb0d0; font-size: 14px;">W: 0 | L: 0</span>
+          <div style="display: flex; align-items: center; gap: 6px; background: rgba(0, 20, 50, 0.6); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(0, 180, 255, 0.3);">
+            <span style="font-size: 12px; color: #00e1ff;">CALLSIGN:</span>
+            <input id="input-callsign" type="text" placeholder="Pilot Call" value="Commander" style="background: rgba(0, 0, 0, 0.5); border: 1px solid #205080; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; width: 110px;">
+            <button id="btn-sync-cloud" style="padding: 4px 8px; font-size: 11px;">☁ SYNC</button>
+            <span id="label-sync-status" style="font-size: 11px; color: #00ff88;">• Synced</span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <span id="label-credits" style="font-size: 22px; font-weight: 800; color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);">
+            ⚡ 1,000 CR
+          </span>
+          <button id="btn-back-menu" style="padding: 6px 14px; font-size: 12px;">◄ MENU</button>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="armada">🚀 ACTIVE FLEET</button>
+        <button class="tab-btn" data-tab="world">🌍 PLANETARY OUTPOST</button>
+        <button class="tab-btn" data-tab="shipyard">🛠 SHIP RECRUITMENT</button>
+        <button class="tab-btn" data-tab="base">🏛 STARBASE EXPANSION</button>
+        <button class="tab-btn" data-tab="missions">⚔ MISSIONS & WARZONE</button>
+      </div>
+
+      <!-- TAB 1: FLEET & SHIPYARD -->
+      <div id="tab-armada" class="content-area tab-content">
+        <div class="glass-panel" style="padding: 16px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: #00ff88; font-size: 16px;">DEPLOYED FLEET WING</h3>
+            <span id="label-fleet-power" style="color: #8cb0d0; font-size: 13px;">Armada Rating: 0</span>
+          </div>
+          <div id="list-player-fleet" class="scroll-list"></div>
+        </div>
+
+        <div class="glass-panel" style="padding: 16px; display: flex; flex-direction: column;">
+          <h3 style="color: #ffd700; font-size: 16px; margin-bottom: 12px;">FAST REINFORCEMENTS</h3>
+          <div id="list-quick-buy" class="scroll-list"></div>
+        </div>
+      </div>
+
+      <!-- TAB: WORLD LANDING & PLANETARY COLONY -->
+      <div id="tab-world" class="content-area tab-content" style="display: none; grid-template-columns: 1fr 1fr;">
+        <div class="glass-panel" style="padding: 20px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="color: #00ffaa; font-size: 18px;">🌍 KEPLER-186F SURFACE EXPEDITION</h3>
+            <span style="font-size: 12px; color: #ffd700;">Dominion Frontier World</span>
+          </div>
+          <p style="color: #9abfd8; font-size: 13px; margin-bottom: 16px; line-height: 1.5;">
+            Touch down from orbit onto the rocky planetary surface. Manage frontier extraction rigs, solar generators, and surface defenses.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+            <button id="btn-toggle-surface-cam" class="btn-primary" style="padding: 12px;">
+              🔭 SWITCH CAMERA TO SURFACE COLONY
+            </button>
+            <button id="btn-extract-minerals" style="padding: 12px;">
+              ⛏ HARVEST DEEP-CORE MINERAL NODE (+200 CR)
+            </button>
+            <button id="btn-build-surface-turret" style="padding: 12px;">
+              🛡 REINFORCE SURFACE DEFENSE TURRET (300 CR)
+            </button>
+          </div>
+          <div id="colony-status-box" style="background: rgba(0, 15, 30, 0.6); padding: 12px; border-radius: 6px; border: 1px solid rgba(0, 200, 150, 0.3); font-size: 12px; color: #9fd8c0;">
+            Status: Outpost operational • Atmospheric shields active • Extraction drone idle
+          </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 20px; display: flex; flex-direction: column;">
+          <h3 style="color: #00d0ff; font-size: 18px; margin-bottom: 12px;">OUTPOST INSTALLATIONS</h3>
+          <div class="scroll-list" style="max-height: calc(100vh - 240px);">
+            <div class="item-card">
+              <div>
+                <div style="font-weight: bold; color: #fff;">Pressurized Command Dome</div>
+                <div style="font-size: 12px; color: #8cb0d0;">Primary human habitat and planetary telemetry link</div>
+              </div>
+              <span style="color: #00ff88; font-size: 13px;">ACTIVE</span>
+            </div>
+            <div class="item-card">
+              <div>
+                <div style="font-weight: bold; color: #fff;">Helium-3 Extractor Rig</div>
+                <div style="font-size: 12px; color: #8cb0d0;">Sub-surface geothermal drill harvesting power cells</div>
+              </div>
+              <span id="label-extractor-status" style="color: #ffd700; font-size: 13px;">TIER 1</span>
+            </div>
+            <div class="item-card">
+              <div>
+                <div style="font-weight: bold; color: #fff;">Automated Dropship Landing Pad</div>
+                <div style="font-size: 12px; color: #8cb0d0;">Heavy structural pad with refueling gantry</div>
+              </div>
+              <span style="color: #00ff88; font-size: 13px;">ONLINE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: SHIPYARD -->
+      <div id="tab-shipyard" class="content-area tab-content" style="display: none; grid-template-columns: 1fr;">
+        <div class="glass-panel" style="padding: 20px; display: flex; flex-direction: column;">
+          <h3 style="color: #00d0ff; font-size: 18px; margin-bottom: 14px;">ORBITAL SHIPYARD SPECIFICATIONS</h3>
+          <div id="list-full-shipyard" class="scroll-list" style="max-height: calc(100vh - 200px);"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: STARBASE EXPANSION -->
+      <div id="tab-base" class="content-area tab-content" style="display: none; grid-template-columns: 1fr;">
+        <div class="glass-panel" style="padding: 20px; display: flex; flex-direction: column;">
+          <h3 style="color: #00e1ff; font-size: 18px; margin-bottom: 14px;">FRONTIER OUTPOST INFRASTRUCTURE</h3>
+          <div id="list-base-upgrades" class="scroll-list" style="max-height: calc(100vh - 200px);"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: MISSIONS -->
+      <div id="tab-missions" class="content-area tab-content" style="display: none; grid-template-columns: 1fr;">
+        <div class="glass-panel" style="padding: 20px; display: flex; flex-direction: column;">
+          <h3 style="color: #ff5566; font-size: 18px; margin-bottom: 14px;">TACTICAL MISSION DEPLOYMENTS</h3>
+          <div id="list-missions" class="scroll-list" style="max-height: calc(100vh - 200px);"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BATTLE HUD -->
+    <div id="screen-battle" class="screen">
+      <div class="glass-panel battle-header interactive">
+        <div>
+          <span style="color: #ffaa00; font-weight: 800; font-size: 16px;">⚔ ENGAGEMENT IN PROGRESS</span>
+          <div id="battle-mission-name" style="color: #9cb8d0; font-size: 12px;">Sector Skirmish</div>
+        </div>
+        <div class="fleet-counter">
+          <span class="counter-friend" id="battle-friendly-count">FRIENDLY: 0</span>
+          <span style="color: #446688; margin: 0 10px;">|</span>
+          <span class="counter-foe" id="battle-enemy-count">HOSTILE: 0</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button id="btn-cam-mode" style="padding: 6px 12px; font-size: 12px;">🎥 CAM: ORBIT</button>
+          <button id="btn-retreat" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">⚑ RETREAT</button>
+        </div>
+      </div>
+
+      <!-- CORNER FLIGHT CONTROLS VISUAL -->
+      <div class="hud-controls-corner">
+        <div class="hud-header">
+          <span>🚀</span> FLIGHT MANUAL CONTROLS
+        </div>
+        <div class="hud-row">
+          <span>THRUST FWD / REV</span>
+          <div class="hud-keys-group">
+            <span class="hud-key-badge" id="hud-key-w">W</span>
+            <span class="hud-key-badge" id="hud-key-s">S</span>
+          </div>
+        </div>
+        <div class="hud-row">
+          <span>YAW STEER</span>
+          <div class="hud-keys-group">
+            <span class="hud-key-badge" id="hud-key-a">A</span>
+            <span class="hud-key-badge" id="hud-key-d">D</span>
+          </div>
+        </div>
+        <div class="hud-row">
+          <span>ALTITUDE DRIFT</span>
+          <div class="hud-keys-group">
+            <span class="hud-key-badge" id="hud-key-q">Q</span>
+            <span class="hud-key-badge" id="hud-key-e">E</span>
+          </div>
+        </div>
+        <div class="hud-row">
+          <span>FIRE BATTERIES</span>
+          <div class="hud-keys-group">
+            <span class="hud-key-badge" id="hud-key-space" style="min-width: 50px;">SPACE</span>
+          </div>
+        </div>
+        <div class="hud-row">
+          <span>CAMERA MODE</span>
+          <div class="hud-keys-group">
+            <span class="hud-key-badge" id="hud-key-c">C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL (VICTORY / DEFEAT) -->
+    <div id="modal-overlay" class="interactive">
+      <div class="glass-panel modal-box">
+        <h2 id="modal-title" style="font-size: 38px; margin-bottom: 12px; font-weight: 900;">VICTORY!</h2>
+        <p id="modal-body" style="font-size: 16px; color: #a0c8e8; margin-bottom: 24px; line-height: 1.6;"></p>
+        <div id="modal-actions" style="display: flex; flex-direction: column; gap: 10px;">
+          <button id="btn-land-surface-gate" class="btn-primary" style="width: 100%; padding: 16px; font-size: 17px; background: linear-gradient(135deg, rgba(0, 200, 140, 0.95), rgba(0, 100, 70, 0.98)); border-color: #00ffaa; box-shadow: 0 0 20px rgba(0,255,170,0.5);">
+            🚀 ENGAGE WARP TO PLANET SURFACE (ON-FOOT MMORPG)
+          </button>
+          <button id="btn-modal-close" style="width: 100%; padding: 13px; font-size: 15px;">
+            ↩ RETURN TO STARBASE COMMAND
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MMORPG SURFACE ON-FOOT HUD & CONTROLS -->
+    <div id="mmorpg-surface-hud" class="interactive" style="display: none; position: absolute; top: 16px; left: 16px; z-index: 120; flex-direction: column; gap: 8px;">
+      <div class="glass-panel" style="padding: 10px 16px; display: flex; align-items: center; gap: 12px; min-width: 280px;">
+        <div style="width: 44px; height: 44px; border-radius: 50%; background: #0c2040; border: 2px solid #00ffaa; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 0 10px rgba(0,255,170,0.4);">
+          🧑‍🚀
+        </div>
+        <div>
+          <div style="font-weight: 800; color: #fff; font-size: 15px;" id="surface-hud-callsign">Commander</div>
+          <div style="font-size: 12px; color: #00e1ff;">Planet: <strong id="surface-hud-planet">Kepler-186f (Plane 0)</strong></div>
+          <div style="font-size: 11px; color: #8cb0d0;">State: <span id="surface-hud-state" style="color: #00ff88; font-weight: 700;">On Foot (Exited Ship)</span></div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button id="btn-toggle-foot-ship" class="btn-primary" style="padding: 8px 14px; font-size: 12px;">
+          🚀 BOARD SHIP & LAUNCH
+        </button>
+        <button id="btn-toggle-pov" style="padding: 8px 12px; font-size: 12px;">
+          📷 POV: 3RD PERSON
+        </button>
+        <button id="btn-view-backpack" style="padding: 8px 12px; font-size: 12px;">
+          🎒 INVENTORY
+        </button>
+      </div>
+    </div>
+
+    <!-- MMORPG PROXIMITY INTERACTION PROMPT -->
+    <div id="mmorpg-action-prompt" class="interactive" style="display: none; position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(4, 12, 30, 0.94); border: 1px solid #00e1ff; border-radius: 24px; padding: 10px 28px; color: #fff; font-size: 14px; font-weight: 700; z-index: 150; box-shadow: 0 4px 25px rgba(0, 225, 255, 0.5); text-align: center; cursor: pointer;">
+      <span style="color: #00ffaa; margin-right: 6px;">[E]</span> <span id="action-prompt-text">Talk-to Cmdr. Sarah Vance (NPC #101)</span>
+    </div>
+
+    <!-- MMORPG DIALOGUE WINDOW (OpenRSC Style) -->
+    <div id="mmorpg-dialogue-box" class="glass-panel interactive" style="display: none; position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); width: 720px; max-width: 94%; padding: 22px; z-index: 250; box-shadow: 0 12px 48px rgba(0,0,0,0.9), 0 0 24px rgba(0,225,255,0.3); border: 2px solid #00d0ff;">
+      <div style="display: flex; gap: 18px; align-items: flex-start;">
+        <div id="dialogue-avatar" style="width: 64px; height: 64px; border-radius: 10px; background: #0c2038; border: 2px solid #00e1ff; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; box-shadow: 0 0 14px rgba(0,200,255,0.4);">
+          👨‍🚀
+        </div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div>
+              <span id="dialogue-name" style="font-size: 18px; font-weight: 800; color: #00ffaa; letter-spacing: 0.5px;">Cmdr. Sarah Vance</span>
+              <span id="dialogue-title" style="font-size: 12px; color: #8cb0d0; margin-left: 8px;">Tactical Gunnery Master</span>
+            </div>
+            <span id="dialogue-id-badge" style="font-size: 11px; color: #70c4ff; background: rgba(0,60,120,0.6); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(0,180,255,0.4);">NPC #101 • Level 48</span>
+          </div>
+          <div id="dialogue-text" style="font-size: 15px; color: #e2f0fc; line-height: 1.6; margin-bottom: 16px; min-height: 44px;">
+            Greetings, Commander! Keeping our perimeter safe from NGF raiders?
+          </div>
+          <div id="dialogue-options" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Dialogue choice options dynamically rendered -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MMORPG INVENTORY MODAL -->
+    <div id="mmorpg-backpack-modal" class="interactive" style="display: none; position: absolute; top: 70px; right: 24px; z-index: 180;">
+      <div class="glass-panel" style="padding: 16px; width: 320px; box-shadow: 0 8px 32px rgba(0,0,0,0.85); border: 1px solid #00e1ff;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(0,180,255,0.3); padding-bottom: 6px;">
+          <span style="font-weight: 800; color: #00ffaa; font-size: 14px;">🎒 COMMANDER BACKPACK</span>
+          <button id="btn-close-backpack" style="padding: 2px 8px; font-size: 11px;">✕</button>
+        </div>
+        <div id="backpack-items-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+          <!-- Items dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SPACE CELESTIAL PLANET LANDING PROMPT -->
+    <div id="space-planet-target-card" class="interactive" style="display: none; position: absolute; bottom: 30px; right: 30px; z-index: 140; min-width: 320px;">
+      <div class="glass-panel" style="padding: 18px; border: 1px solid #00ffaa; box-shadow: 0 8px 30px rgba(0,255,170,0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 11px; color: #00ffaa; font-weight: 800; letter-spacing: 1px;">PLANETARY SYSTEM DETECTED</span>
+          <span id="target-planet-badge" style="font-size: 10px; color: #ffd700; background: rgba(0,40,80,0.6); padding: 2px 6px; border-radius: 4px;">Plane 0</span>
+        </div>
+        <h3 id="target-planet-name" style="font-size: 18px; color: #fff; margin-bottom: 4px;">Kepler-186f</h3>
+        <p id="target-planet-desc" style="font-size: 12px; color: #9abfd8; line-height: 1.4; margin-bottom: 14px;">
+          Terrestrial frontier outpost rich in geothermal helium-3 and titanium ores.
+        </p>
+        <button id="btn-land-target-planet" class="btn-primary" style="width: 100%; padding: 12px; font-size: 14px; font-weight: 800;">
+          🚀 LAND SHIP ON SURFACE
+        </button>
+      </div>
+    </div>
+    <!-- ================================================================== -->
+    <!-- MOBILE VIRTUAL CONTROLS — shown via JS on touch-only devices      -->
+    <!-- ================================================================== -->
+
+    <!-- Surface On-Foot: Left Joystick + Right Action Buttons -->
+    <div id="mobile-surface-controls" style="display:none; position:absolute; bottom:0; left:0; right:0; height:230px; pointer-events:none; z-index:200;">
+
+      <!-- Virtual Move Joystick (bottom-left) -->
+      <div id="joystick-zone" style="position:absolute; bottom:18px; left:14px; width:148px; height:148px; pointer-events:auto;">
+        <div id="joystick-outer" style="width:100%; height:100%; border-radius:50%; background:rgba(0,160,255,0.1); border:2.5px solid rgba(0,200,255,0.4); position:relative; box-shadow:0 0 28px rgba(0,160,255,0.2);">
+          <div id="joystick-inner" style="width:58px; height:58px; border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(80,220,255,0.92), rgba(0,100,200,0.7)); border:2px solid #00e1ff; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 0 18px rgba(0,225,255,0.85); pointer-events:none;"></div>
+        </div>
+        <div style="text-align:center; margin-top:4px; font-size:8px; color:rgba(0,180,255,0.65); letter-spacing:1.2px; font-weight:800; pointer-events:none;">MOVE</div>
+      </div>
+
+      <!-- Sprint Toggle (above joystick) -->
+      <button id="mob-btn-sprint" class="mob-btn" style="position:absolute; bottom:178px; left:50px; width:84px; height:26px; border-radius:12px; font-size:9px; letter-spacing:1px; background:rgba(255,140,0,0.75); border-color:#ffaa00; color:#fff4d0; padding:0; pointer-events:auto;">⚡ SPRINT</button>
+
+      <!-- Action Buttons (bottom-right stack) -->
+      <div style="position:absolute; bottom:14px; right:10px; display:flex; flex-direction:column; gap:9px; align-items:center; pointer-events:auto;">
+        <!-- Primary: Interact [E] -->
+        <button id="mob-btn-interact" class="mob-btn" style="width:76px; height:76px; border-radius:50%; font-size:24px; background:rgba(0,155,75,0.9); border-color:#00ff88; color:#dfffee; border-width:2.5px; box-shadow:0 0 18px rgba(0,255,136,0.4);">
+          ⚡<br><span class="mob-btn-label" style="color:#a0ffcc;">INTERACT</span>
+        </button>
+        <!-- Secondary row -->
+        <div style="display:flex; gap:9px;">
+          <button id="mob-btn-board" class="mob-btn" style="width:62px; height:62px; border-radius:50%; font-size:20px; background:rgba(0,100,200,0.88); border-color:#00d0ff; color:#e0f4ff; box-shadow:0 0 14px rgba(0,180,255,0.35);">
+            🚀<br><span class="mob-btn-label" style="color:#90dcff;">LAUNCH</span>
+          </button>
+          <button id="mob-btn-inventory" class="mob-btn" style="width:62px; height:62px; border-radius:50%; font-size:20px; background:rgba(70,20,120,0.88); border-color:#bf55ec; color:#f0dcff; box-shadow:0 0 14px rgba(180,80,240,0.35);">
+            🎒<br><span class="mob-btn-label" style="color:#d4a0ff;">BAG</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Battle Controls: Left Steering Joystick + Right Fire/Altitude -->
+    <div id="mobile-battle-controls" style="display:none; position:absolute; bottom:0; left:0; right:0; height:230px; pointer-events:none; z-index:200;">
+
+      <!-- Battle Steer Joystick (bottom-left) -->
+      <div id="battle-joystick-zone" style="position:absolute; bottom:18px; left:14px; width:148px; height:148px; pointer-events:auto;">
+        <div id="battle-joystick-outer" style="width:100%; height:100%; border-radius:50%; background:rgba(255,80,0,0.1); border:2.5px solid rgba(255,120,0,0.45); position:relative; box-shadow:0 0 28px rgba(255,80,0,0.22);">
+          <div id="battle-joystick-inner" style="width:58px; height:58px; border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(255,180,80,0.92), rgba(200,70,0,0.7)); border:2px solid #ffaa00; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 0 18px rgba(255,150,0,0.85); pointer-events:none;"></div>
+        </div>
+        <div style="text-align:center; margin-top:4px; font-size:8px; color:rgba(255,150,0,0.7); letter-spacing:1.2px; font-weight:800; pointer-events:none;">STEER</div>
+      </div>
+
+      <!-- Altitude Buttons (above battle joystick) -->
+      <div style="position:absolute; bottom:178px; left:46px; display:flex; gap:7px; pointer-events:auto;">
+        <button id="mob-btn-ascend" class="mob-btn" style="width:50px; height:30px; border-radius:10px; font-size:14px; background:rgba(0,90,180,0.82); border-color:#00aaff; color:#e0f4ff; padding:0;">▲</button>
+        <button id="mob-btn-descend" class="mob-btn" style="width:50px; height:30px; border-radius:10px; font-size:14px; background:rgba(80,30,0,0.82); border-color:#ffaa00; color:#fff4d0; padding:0;">▼</button>
+      </div>
+
+      <!-- Right side: Big Fire + Retreat -->
+      <div style="position:absolute; bottom:14px; right:10px; display:flex; flex-direction:column; gap:9px; align-items:center; pointer-events:auto;">
+        <button id="mob-btn-fire" class="mob-btn" style="width:94px; height:94px; border-radius:50%; font-size:36px; background:rgba(155,18,18,0.94); border-color:#ff3333; color:#fff; border-width:3px; box-shadow:0 0 28px rgba(255,40,40,0.6);">
+          🔥
+        </button>
+        <button id="mob-btn-retreat-battle" class="mob-btn" style="width:94px; height:28px; border-radius:12px; font-size:9px; letter-spacing:0.5px; background:rgba(85,14,14,0.9); border-color:#ff4444; color:#ffd8d8; padding:0;">⚑ RETREAT</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

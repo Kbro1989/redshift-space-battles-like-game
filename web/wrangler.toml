@@ -1,0 +1,7 @@
+name = "redshift-space-battles"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-11-01"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "75b9c5c5ac0d4dbeac90cff8ef5daa00"

@@ -1,0 +1,33 @@
+["struct",
+	["datalen","ushort"],
+	["unkheader",["match",{"datalen=0xffff":"ubyte","other":0}]],
+	["data",["chunkedarray",["match",{"datalen=0xffff":"ushort","other":["ref","datalen"]}],
+		[["type","ubyte"]],
+		[["unknown","bool"]],
+		[["unknown_always_FFFF","ushort"]],
+		[["length","varushort"]],
+		[["data",["array",["ref","length"],"varushort"]]]
+	]],
+	["bonecount","ushort"],
+	["unkbyte","ubyte"],
+	["skeleton",["chunkedarray",["ref","bonecount"],
+		[
+			["parentbone","ushort"],
+			["bonematrix",["array",16,"float"]],
+			// nearly always identical for bones in the same skeleton, but different between skeletons
+			["unkbuffer",["buffer",12,"hex"]],
+			["bonematrix2",["opt","unkbyte==2",["array",16,"float"]]],
+			["unkextra0",["opt","unkbyte==2","ubyte"]],
+			["unkextra1",["opt","unkbyte==2","float"]],
+			["unkextra2",["opt","unkbyte==2","ubyte"]],
+			["unkextra3",["opt","unkbyte==2","ushort"]],
+			["unkextra4",["opt","unkbyte==2","ushort"]],
+			["unkextra5",["opt","unkbyte==2","ushort"]]
+		]
+	]],
+	
+	// seems to contain a list of (most) bone ids
+	["unkarr",["array","ushort","ushort"]],
+	//always 0
+	["foot","ubyte"]
+]

@@ -1,0 +1,496 @@
+[
+  {
+    "file": "schema-framemaps.json",
+    "status": "FOUND",
+    "source_files": [
+      "framemaps.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-items.json",
+    "status": "FOUND",
+    "source_files": [
+      "items.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-enums.json",
+    "status": "FOUND",
+    "source_files": [
+      "enums.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-npcs.json",
+    "status": "FOUND",
+    "source_files": [
+      "npcs.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-soundjson.json",
+    "status": "FOUND",
+    "source_files": [
+      "audio.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-musicjson.json",
+    "status": "FOUND",
+    "source_files": [
+      "audio.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-locs.json",
+    "status": "FOUND",
+    "source_files": [
+      "locs.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-achievements.json",
+    "status": "FOUND",
+    "source_files": [
+      "achievements.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-structs.json",
+    "status": "FOUND",
+    "source_files": [
+      "structs.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-sequences.json",
+    "status": "FOUND",
+    "source_files": [
+      "sequences.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-spotanims.json",
+    "status": "FOUND",
+    "source_files": [
+      "spotanims.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-materials.json",
+    "status": "FOUND",
+    "source_files": [
+      "materials.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-oldmaterials.json",
+    "status": "FOUND",
+    "source_files": [
+      "oldmaterials.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-quickchats.json",
+    "status": "FOUND",
+    "source_files": [
+      "quickchatcategories.jsonc",
+      "quickchatlines.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-dbtables.json",
+    "status": "FOUND",
+    "source_files": [
+      "dbtables.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-dbrows.json",
+    "status": "FOUND",
+    "source_files": [
+      "dbrows.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-dbcolumns.json",
+    "status": "FOUND",
+    "source_files": [
+      "dbrows.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-quests.json",
+    "status": "FOUND",
+    "source_files": [
+      "quests.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-hitmarks.json",
+    "status": "FOUND",
+    "source_files": [
+      "hitmarks.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-headbars.json",
+    "status": "FOUND",
+    "source_files": [
+      "headbars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-varbits.json",
+    "status": "FOUND",
+    "source_files": [
+      "varbits.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_player.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_npm.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_client.json",
+    "status": "FOUND",
+    "source_files": [
+      "clientscript.jsonc",
+      "clientscriptdata.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_world.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_region.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_object.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_clan.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_clan_settings.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_campaign.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-var_player_group.json",
+    "status": "FOUND",
+    "source_files": [
+      "vars.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-overlays.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapsquare_overlays.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-identitykit.json",
+    "status": "FOUND",
+    "source_files": [
+      "identitykit.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-inventories.json",
+    "status": "FOUND",
+    "source_files": [
+      "inventories.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-params.json",
+    "status": "FOUND",
+    "source_files": [
+      "params.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-underlays.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapsquare_underlays.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-mapscenes.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapscenes.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-areas.json",
+    "status": "FOUND",
+    "source_files": [
+      "areas.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-skyboxes.json",
+    "status": "FOUND",
+    "source_files": [
+      "skyboxes.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-animgroupconfigs.json",
+    "status": "FOUND",
+    "source_files": [
+      "animgroupconfigs.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-cursors.json",
+    "status": "FOUND",
+    "source_files": [
+      "cursors.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-maplabels.json",
+    "status": "FOUND",
+    "source_files": [
+      "maplabels.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-maplabellocations.json",
+    "status": "FOUND",
+    "source_files": [
+      "maplabellocations.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-mapzones.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapzones.json",
+      "mapzones_pastes.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-mappastes.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapzones_pastes.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-stylesheets.json",
+    "status": "FOUND",
+    "source_files": [
+      "stylesheets.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-cutscenes.json",
+    "status": "FOUND",
+    "source_files": [
+      "cutscenes.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-maptiles.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapsquare_tiles.jsonc",
+      "mapsquare_tiles_64.jsonc",
+      "mapsquare_tiles_66.jsonc",
+      "mapsquare_tiles_nxt.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-maptiles_ntx.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapsquare_tiles_nxt.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-maplocations.json",
+    "status": "MISSING",
+    "source_files": [],
+    "missing": [
+      "maplocations.jsonc"
+    ]
+  },
+  {
+    "file": "schema-mapenvs.json",
+    "status": "FOUND",
+    "source_files": [
+      "mapsquare_envs.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-frames.json",
+    "status": "FOUND",
+    "source_files": [
+      "frames.json"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-models.json",
+    "status": "FOUND",
+    "source_files": [
+      "models.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-scelitalanims.json",
+    "status": "FOUND",
+    "source_files": [
+      "skeletalanim.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-proctextures.json",
+    "status": "FOUND",
+    "source_files": [
+      "proctexture.jsonc",
+      "oldproctexture.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-components.json",
+    "status": "FOUND",
+    "source_files": [
+      "interfaces.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-fontmetrics.json",
+    "status": "FOUND",
+    "source_files": [
+      "fontmetrics.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-indices.json",
+    "status": "FOUND",
+    "source_files": [
+      "cacheindex.json",
+      "rootcacheindex.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-rootindex.json",
+    "status": "FOUND",
+    "source_files": [
+      "rootcacheindex.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "schema-clientscriptops.json",
+    "status": "FOUND",
+    "source_files": [
+      "clientscript.jsonc"
+    ],
+    "missing": []
+  },
+  {
+    "file": "clientvars.d.ts",
+    "status": "MISSING",
+    "source_files": [],
+    "missing": []
+  }
+]

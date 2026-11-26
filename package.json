@@ -1,0 +1,16 @@
+{
+  "name": "redshift-space-battles",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"pnpm --filter server dev\" \"pnpm --filter client dev\"",
+    "test": "pnpm --filter engine test && pnpm --filter server test",
+    "build": "pnpm --filter engine build && pnpm --filter server build && pnpm --filter client build",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "typescript": "^5.5.0",
+    "wrangler": "^4.165.0"
+  }
+}

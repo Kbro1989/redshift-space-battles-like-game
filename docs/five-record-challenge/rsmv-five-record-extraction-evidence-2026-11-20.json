@@ -1,0 +1,261 @@
+{
+  "metadata": {
+    "generated": "2026-11-20",
+    "project": "RSMV \u2192 Redshift Five-Record Cache Retrieval Challenge",
+    "target_directory": "C:/Users/krist/Desktop/redshift-space-battles",
+    "recipients": [
+      "User review (Kbro1989 / Kristain33rs)"
+    ]
+  },
+  "summary": {
+    "total_records_requested": 5,
+    "total_records_extracted": 1,
+    "extraction_coverage": "20%",
+    "decoder_blocker": "Decoder merge required for NPC/Loc/Material/Spotanim (records 2-5)",
+    "status": "PARTIALLY VERIFIED \u2014 SCHEMA_COMPLETE, CACHE_EXTRACTION_PARTIAL"
+  },
+  "evidence_classes": {
+    "src_verified": 59,
+    "mapping_verified": 59,
+    "cache_extraction": 1,
+    "identity_continuity": 0,
+    "decoder_blocks": 3
+  },
+  "decoder_verification": {
+    "decoder_versions": {
+      "parser": "src/parser/jsondecoders.ts (RSMV-UPSTREAM)",
+      "opcodes": "src/opcodes/*.jsonc",
+      "cache_loader": "GameCacheLoader (src/cache/index.ts)",
+      "current_buildnr": 950,
+      "cache_format": "js5-*.jcache (ZLB-compressed)"
+    },
+    "decoder_compatibility": {
+      "maptiles": {
+        "major": 58,
+        "compatible": true,
+        "tests": 16384
+      },
+      "npcs": {
+        "major": 3,
+        "compatible": false,
+        "blocked_by": "opcode_reader.ts stale for current cache format"
+      },
+      "locs": {
+        "major": 2,
+        "compatible": false,
+        "blocked_by": "opcode_reader.ts stale for current cache format"
+      },
+      "materials": {
+        "major": 4,
+        "compatible": false,
+        "blocked_by": "opcode_reader.ts stale for current cache format"
+      },
+      "spotanims": {
+        "major": 17,
+        "compatible": false,
+        "blocked_by": "opcode_reader.ts stale for current cache format"
+      }
+    },
+    "recommended_merge_sequence": [
+      "1. npm run build (rsmv-upstream)",
+      "2. Merge src/parser/opcode_reader.ts from upstream c85984c",
+      "3. Merge src/parser/filetypes.ts from upstream c85984c",
+      "4. Merge src/parser/jsondecoders.ts from upstream c85984c",
+      "5. npm run filetypes",
+      "6. npm run build",
+      "7. Run testdecode for npcs, locs, materials, spotanims",
+      "8. Re-run five-record challenge"
+    ]
+  },
+  "records": {
+    "1": {
+      "name": "Map Tile (mapsquare 50,50)",
+      "cache_major": 58,
+      "status": "EXTRACTED",
+      "record_file": "maptiles_test/maptiles-50_50.json",
+      "sha256": "eb326fb3fcda9a226d7d0755a6df105aeb996db5a0991e92aed101f5be438296",
+      "size_bytes": 2337191,
+      "records_decoded": 16384,
+      "field_coverage": {
+        "flags": {
+          "present": true,
+          "values": [
+            12,
+            13,
+            14,
+            15
+          ],
+          "count": 12
+        },
+        "shape": {
+          "present": true,
+          "count": 44
+        },
+        "overlay": {
+          "present": true,
+          "count": 22
+        },
+        "settings": {
+          "present": true,
+          "count": 13
+        },
+        "underlay": {
+          "present": true,
+          "count": 12
+        },
+        "height": {
+          "present": true,
+          "range": [
+            25,
+            46
+          ],
+          "count": 62
+        }
+      },
+      "reference_counts": {
+        "513": 1496,
+        "463": 1077,
+        "321": 1014,
+        "42": 682,
+        "424": 602,
+        "112": 381,
+        "515": 335,
+        "272": 325,
+        "528": 294,
+        "273": 265,
+        "548": 168,
+        "551": 157,
+        "433": 154,
+        "494": 150,
+        "525": 91
+      },
+      "evidence_path": "rsmv-upstream/extracted_layers/maptiles_test/maptiles-50_50.json",
+      "note": "Tile decoded via src/parser/jsondecoders.ts \u2192 parseMaptiles; records: 16,384 tiles (all 58.x mapsquares)"
+    },
+    "2": {
+      "name": "NPC 32971 (Death Reaper Steed)",
+      "cache_major": 3,
+      "status": "PENDING",
+      "blocker": "Decoder merge required: src/parser/opcode_reader.ts, jsondecoders.ts, filetypes.ts",
+      "required_decoder": "parseNpcs / decodeNpcs",
+      "expected_fields": [
+        "name",
+        "models[]",
+        "animation_group",
+        "material_replacements[]",
+        "extra"
+      ],
+      "expected_references": {
+        "models": [
+          146734,
+          146737,
+          146742,
+          146814
+        ],
+        "animation_group": 4435,
+        "materials": [
+          25285,
+          25287,
+          25288,
+          25291
+        ],
+        "struct": 53592
+      },
+      "evidence_required": [
+        "Cache archive identified (js5-3.jcache)",
+        "Raw bytes retrieved (SHA-256 recorded)",
+        "Decoder invoked",
+        "Fields compared against supplied example",
+        "References resolved (models, materials, animation group)"
+      ]
+    },
+    "3": {
+      "name": "Loc 140005 (POH_TEST_HEDGE_BOX_TALL_6X1)",
+      "cache_major": 2,
+      "status": "PENDING",
+      "blocker": "Decoder merge required",
+      "required_decoder": "parseLocs / decodeLocs",
+      "expected_fields": [
+        "name",
+        "width",
+        "blocks_movement",
+        "scaleY",
+        "deletable",
+        "models[]"
+      ],
+      "expected_references": {
+        "model": 145175
+      },
+      "evidence_required": [
+        "Cache archive identified",
+        "Raw bytes retrieved",
+        "Decoder invoked",
+        "Fields compared",
+        "References resolved"
+      ]
+    },
+    "4": {
+      "name": "Material 4001 (EGYPTIAN_HEAD_PLATE)",
+      "cache_major": 4,
+      "status": "PENDING",
+      "blocker": "Decoder merge required",
+      "required_decoder": "parseMaterials / decodeMaterials",
+      "expected_fields": [
+        "textures.diffuse",
+        "texmodes",
+        "texmodet",
+        "baseColor",
+        "alphamode",
+        "alphacutoff"
+      ],
+      "expected_references": {
+        "texture": 11172
+      },
+      "evidence_required": [
+        "Cache archive identified",
+        "Raw bytes retrieved",
+        "Decoder invoked",
+        "Fields compared",
+        "References resolved"
+      ]
+    },
+    "5": {
+      "name": "Spotanim 5008",
+      "cache_major": 17,
+      "status": "PENDING",
+      "blocker": "Decoder merge required",
+      "required_decoder": "parseSpotanims / decodeSpotanims",
+      "expected_fields": [
+        "model",
+        "sequence",
+        "ambient"
+      ],
+      "expected_references": {
+        "model": 96963,
+        "sequence": "seq_24134"
+      },
+      "evidence_required": [
+        "Cache archive identified",
+        "Raw bytes retrieved",
+        "Decoder invoked",
+        "Fields compared",
+        "References resolved"
+      ]
+    }
+  },
+  "decoder_invocation": {
+    "command": "node dist/cli.js testdecode --source cache:\"C:/ProgramData/Jagex/RuneScape\"",
+    "modes_tested": [
+      "maptiles",
+      "locs",
+      "materials",
+      "spotanims",
+      "npcs"
+    ],
+    "result": "maptiles: OK (16384 tiles); npcs/locs/materials/spotanims: blocked (stale decoder)",
+    "current_buildnr": 950,
+    "cache_revision": "2026-09-15 (cache update)",
+    "compatibility_rule": "Before further decoder changes, test each cache loader against a known-good record. Do not merge decoder files until the testdecode suite passes for the live cache."
+  },
+  "report_generated": "2026-11-20"
+}

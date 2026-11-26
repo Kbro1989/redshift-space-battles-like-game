@@ -1,0 +1,53 @@
+{
+	"0x01": { "name":               "text", "read": "string" },
+	"0x02": { "name":            "replies", "read": ["array","ubyte","ushort","chatphrase"]},
+	"0x03": { "name":            "inserts", "read": ["array","ubyte",["struct",
+		["type","ushort"],
+		["pickEnum",["opt",["type",0],"ushort"],"enum"],
+		["pickTtem",["opt",["type",1],"true"]],
+		["skillLevel",["opt",["type",4],"ushort"],"stat"],
+		["varplayerEnum",["opt",["type",6],["struct",
+			["enum","ushort","enum"],
+			["varbit","ushort","varbit"]
+		]]],
+		["varplayer",["opt",["type",8],"ushort"],"var_player"],
+		["varbit",["opt",["type",9],"ushort"],"varbit"],
+		["pickTradeableItem",["opt",["type",10],"true"]],
+		["skillLevelEnum",["opt",["type",11],["struct",
+			["enum","ushort","enum"],
+			["skill","ushort","stat"]
+		]]],
+		["friendsChatCount",["opt",["type",12],"true"]],
+		["varWorld",["opt",["type",14],"ushort"],"var_world"],
+		["combatlevel",["opt",["type",15],"true"]],
+		["varbitEnumstring",["opt",["type",16],["struct",
+			["enum","ushort","enum"],
+			["varbit","ushort","varbit"]
+		]]]
+	]]},
+	"0x05": { "name":         "inserts_v2", "read": ["array","ubyte",["struct",
+		["type","ushort"],
+		["pickEnum",["opt",["type",0],"denseuint"],"enum"],
+		["pickTtem",["opt",["type",1],"true"]],
+		["skillLevel",["opt",["type",4],"ubyte"],"stat"],
+		["varplayerEnum",["opt",["type",6],["struct",
+			["enum","denseuint","enum"],
+			["varbit","denseuint","varbit"]
+		]]],
+		["varplayer",["opt",["type",8],"denseuint"],"var_player"],
+		["varbit",["opt",["type",9],"denseuint"],"varbit"],
+		["pickTradeableItem",["opt",["type",10],"true"]],
+		["skillLevelEnum",["opt",["type",11],["struct",
+			["enum","denseuint","enum"],
+			["skill","ubyte","stat"]
+		]]],
+		["friendsChatCount",["opt",["type",12],"true"]],
+		["varWorld",["opt",["type",14],"denseuint"],"var_world"],
+		["combatlevel",["opt",["type",15],"true"]],
+		["varbitEnumstring",["opt",["type",16],["struct",
+			["enum","denseuint","enum"],
+			["varbit","denseuint","varbit"]
+		]]]
+	]]},
+	"0x04": { "name":      "nonsearchable", "read": "true" }
+}
